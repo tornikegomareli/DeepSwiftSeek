@@ -7,6 +7,12 @@
 
 import Foundation
 
+// TODO: Reasoning model, chain of thoughts.
+// TODO: Create Facade for Chats and Contexts and History
+// TODO: Make API cleaner and simpler to use
+// TODO: Builder
+// TODO: Example SwiftUI App.
+
 @available(iOS 15.0, *)
 public protocol DeepSeekService {
   func chatCompletions(
