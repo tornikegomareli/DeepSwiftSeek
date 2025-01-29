@@ -5,6 +5,7 @@
 
 # Xcode specific
 build/
+.build/
 DerivedData/
 *.xcworkspace/
 *.xccheckout

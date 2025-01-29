@@ -1,0 +1,4 @@
+module DeepSwiftSeek {
+    header "/Users/tornikegomareli/Development/DeepSwiftSeek/.build/arm64-apple-macosx/debug/DeepSwiftSeek.build/DeepSwiftSeek-Swift.h"
+    requires objc
+}

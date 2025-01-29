@@ -1,0 +1,17 @@
+{
+  "": {
+    "swift-dependencies": "/Users/tornikegomareli/Development/DeepSwiftSeek/.build/arm64-apple-macosx/debug/DeepSwiftSeek.build/master.swiftdeps"
+  },
+  "/Users/tornikegomareli/Development/DeepSwiftSeek/Sources/DeepSwiftSeek/DeepSeekModel.swift": {
+    "dependencies": "/Users/tornikegomareli/Development/DeepSwiftSeek/.build/arm64-apple-macosx/debug/DeepSwiftSeek.build/DeepSeekModel.d",
+    "object": "/Users/tornikegomareli/Development/DeepSwiftSeek/.build/arm64-apple-macosx/debug/DeepSwiftSeek.build/DeepSeekModel.swift.o",
+    "swiftmodule": "/Users/tornikegomareli/Development/DeepSwiftSeek/.build/arm64-apple-macosx/debug/DeepSwiftSeek.build/DeepSeekModel~partial.swiftmodule",
+    "swift-dependencies": "/Users/tornikegomareli/Development/DeepSwiftSeek/.build/arm64-apple-macosx/debug/DeepSwiftSeek.build/DeepSeekModel.swiftdeps"
+  },
+  "/Users/tornikegomareli/Development/DeepSwiftSeek/Sources/DeepSwiftSeek/DeepSwiftSeek.swift": {
+    "dependencies": "/Users/tornikegomareli/Development/DeepSwiftSeek/.build/arm64-apple-macosx/debug/DeepSwiftSeek.build/DeepSwiftSeek.d",
+    "object": "/Users/tornikegomareli/Development/DeepSwiftSeek/.build/arm64-apple-macosx/debug/DeepSwiftSeek.build/DeepSwiftSeek.swift.o",
+    "swiftmodule": "/Users/tornikegomareli/Development/DeepSwiftSeek/.build/arm64-apple-macosx/debug/DeepSwiftSeek.build/DeepSwiftSeek~partial.swiftmodule",
+    "swift-dependencies": "/Users/tornikegomareli/Development/DeepSwiftSeek/.build/arm64-apple-macosx/debug/DeepSwiftSeek.build/DeepSwiftSeek.swiftdeps"
+  }
+}

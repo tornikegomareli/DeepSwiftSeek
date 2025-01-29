@@ -1,0 +1,4 @@
+module DeepSwiftSeekPackageTests {
+    header "/Users/tornikegomareli/Development/DeepSwiftSeek/.build/arm64-apple-macosx/debug/DeepSwiftSeekPackageTests.build/DeepSwiftSeekPackageTests-Swift.h"
+    requires objc
+}
