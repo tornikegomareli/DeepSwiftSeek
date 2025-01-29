@@ -6,6 +6,6 @@
 //
 
 
-public struct ToolChoice: Codable {
+public struct ToolChoice: Codable, Sendable {
     /// Implement it later
 }

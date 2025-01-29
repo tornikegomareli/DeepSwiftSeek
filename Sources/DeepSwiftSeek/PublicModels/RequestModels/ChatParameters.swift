@@ -6,7 +6,7 @@
 //
 
 
-public struct ChatParameters: Codable {
+public struct ChatParameters: Codable, Sendable {
   let frequencyPenalty: Double?
   let maxTokens: Int?
   let presencePenalty: Double?
@@ -35,5 +35,151 @@ public struct ChatParameters: Codable {
     case toolChoice = "tool_choice"
     case logprobs
     case topLogprobs = "top_logprobs"
+  }
+  
+  // MARK: - Static Defaults
+  
+  /// Default parameters optimized for creative and varied responses
+  public static let creative = ChatParameters(
+    frequencyPenalty: 0.7,
+    maxTokens: 2048,
+    presencePenalty: 0.7,
+    responseFormat: nil,
+    stop: nil,
+    stream: false,
+    streamOptions: nil,
+    temperature: 0.9,
+    topP: 0.9,
+    tools: nil,
+    toolChoice: nil,
+    logprobs: nil,
+    topLogprobs: nil
+  )
+  
+  /// Default parameters optimized for focused and deterministic responses
+  public static let focused = ChatParameters(
+    frequencyPenalty: 0.3,
+    maxTokens: 2048,
+    presencePenalty: 0.3,
+    responseFormat: nil,
+    stop: nil,
+    stream: false,
+    streamOptions: nil,
+    temperature: 0.3,
+    topP: 0.3,
+    tools: nil,
+    toolChoice: nil,
+    logprobs: nil,
+    topLogprobs: nil
+  )
+  
+  /// Default parameters for streaming responses
+  public static let streaming = ChatParameters(
+    frequencyPenalty: 0.5,
+    maxTokens: 4096,
+    presencePenalty: 0.5,
+    responseFormat: nil,
+    stop: nil,
+    stream: true,
+    streamOptions: nil,
+    temperature: 0.7,
+    topP: 0.9,
+    tools: nil,
+    toolChoice: nil,
+    logprobs: nil,
+    topLogprobs: nil
+  )
+  
+  /// Default parameters for code generation
+  public static let codeGeneration = ChatParameters(
+    frequencyPenalty: 0.2,
+    maxTokens: 2048,
+    presencePenalty: 0.2,
+    responseFormat: nil,
+    stop: ["\n\n", "```"],
+    stream: false,
+    streamOptions: nil,
+    temperature: 0.2,
+    topP: 0.95,
+    tools: nil,
+    toolChoice: nil,
+    logprobs: nil,
+    topLogprobs: nil
+  )
+  
+  /// Default parameters for short, concise responses
+  public static let concise = ChatParameters(
+    frequencyPenalty: 0.5,
+    maxTokens: 256,
+    presencePenalty: 0.5,
+    responseFormat: nil,
+    stop: nil,
+    stream: false,
+    streamOptions: nil,
+    temperature: 0.5,
+    topP: 0.5,
+    tools: nil,
+    toolChoice: nil,
+    logprobs: nil,
+    topLogprobs: nil
+  )
+  
+  // MARK: - Instance Methods
+  
+  /// Creates a new instance with stream enabled/disabled
+  public func withStream(_ enabled: Bool) -> ChatParameters {
+    ChatParameters(
+      frequencyPenalty: self.frequencyPenalty,
+      maxTokens: self.maxTokens,
+      presencePenalty: self.presencePenalty,
+      responseFormat: self.responseFormat,
+      stop: self.stop,
+      stream: enabled,
+      streamOptions: self.streamOptions,
+      temperature: self.temperature,
+      topP: self.topP,
+      tools: self.tools,
+      toolChoice: self.toolChoice,
+      logprobs: self.logprobs,
+      topLogprobs: self.topLogprobs
+    )
+  }
+  
+  /// Creates a new instance with modified max tokens
+  public func withMaxTokens(_ tokens: Int) -> ChatParameters {
+    ChatParameters(
+      frequencyPenalty: self.frequencyPenalty,
+      maxTokens: tokens,
+      presencePenalty: self.presencePenalty,
+      responseFormat: self.responseFormat,
+      stop: self.stop,
+      stream: self.stream,
+      streamOptions: self.streamOptions,
+      temperature: self.temperature,
+      topP: self.topP,
+      tools: self.tools,
+      toolChoice: self.toolChoice,
+      logprobs: self.logprobs,
+      topLogprobs: self.topLogprobs
+    )
+  }
+  
+  /// Creates a new instance with modified temperature
+  public func withTemperature(_ temp: Double) -> ChatParameters {
+    ChatParameters(
+      frequencyPenalty: self.frequencyPenalty,
+      maxTokens: self.maxTokens,
+      presencePenalty: self.presencePenalty,
+      responseFormat: self.responseFormat,
+      stop: self.stop,
+      stream: self.stream,
+      streamOptions: self.streamOptions,
+      temperature: temp,
+      topP: self.topP,
+      tools: self.tools,
+      toolChoice: self.toolChoice,
+      logprobs: self.logprobs,
+      topLogprobs: self.topLogprobs
+    )
   }
 }

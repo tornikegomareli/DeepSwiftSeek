@@ -6,6 +6,6 @@
 //
 
 
-public struct ResponseFormat: Codable {
+public struct ResponseFormat: Codable, Sendable {
     let type: String
 }

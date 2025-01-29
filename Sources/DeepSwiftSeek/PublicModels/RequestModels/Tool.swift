@@ -6,6 +6,6 @@
 //
 
 
-public struct Tool: Codable {
+public struct Tool: Codable, Sendable {
   /// Implement it later
 }

@@ -6,7 +6,7 @@
 //
 
 
-public struct StreamOptions: Codable {
+public struct StreamOptions: Codable, Sendable {
   var includeUsage: Bool
   
   enum CodingKeys: String, CodingKey {
