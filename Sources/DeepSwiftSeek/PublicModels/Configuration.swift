@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Configuration {
+public struct Configuration: Sendable {
   let apiKey: String
   let baseURL: URL
   let timeout: TimeInterval
