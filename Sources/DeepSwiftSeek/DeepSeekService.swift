@@ -7,42 +7,109 @@
 
 import Foundation
 
-@available(iOS 13.0.0, *)
+@available(iOS 15.0, *)
 public protocol DeepSeekService {
   func chatCompletions(
     @ChatMessageBuilder messages: () -> [ChatMessageRequest],
     model: DeepSeekModel,
-    parameters: ChatParameters?
+    parameters: ChatParameters
   ) async throws -> ChatCompletionResponse
+  
+  func chatCompletionStream(
+    @ChatMessageBuilder messages: () -> [ChatMessageRequest],
+    model: DeepSeekModel,
+    parameters: ChatParameters
+  ) async throws -> AsyncThrowingStream<String, Error>
 }
 
-@available(iOS 13.0.0, *)
-public final class DeepSeekClient: DeepSeekService {
+/// TODO: Need to add streaming support
+@available(iOS 15.0, *)
+public final class DeepSeekClient: DeepSeekService, Sendable {
   private let configuration: Configuration
   private let session: URLSession
+  private let serializer: DeepSeekRequestSerializer
+  
   
   public init(configuration: Configuration, session: URLSession = .shared) {
     self.configuration = configuration
     self.session = session
+    self.serializer = DeepSeekRequestSerializer(configuration: configuration)
   }
   
-  public func chatCompletions(messages: () -> [ChatMessageRequest], model: DeepSeekModel, parameters: ChatParameters?) async throws -> ChatCompletionResponse {
-    guard let url = URL(string: "\(configuration.baseURL)/chat/completions") else {
-      throw DeepSeekError.invalidUrl(message: "Invalid Url for DeepSeek completion endpoint")
+  @available(iOS 15.0, *)
+  public func chatCompletionStream(
+    messages: () -> [ChatMessageRequest],
+    model: DeepSeekModel,
+    parameters: ChatParameters
+  ) async throws -> AsyncThrowingStream<String, any Error> {
+    let streamParameters = parameters.withStream(true)
+    
+    let request = try serializer.serializeChatMessageRequest(
+      messages: messages(),
+      model: model,
+      parameters: streamParameters
+    )
+    
+    return AsyncThrowingStream { @Sendable continuation in
+      Task {
+        do {
+          let (bytes, response) = try await session.bytes(for: request)
+          
+          guard let httpResponse = response as? HTTPURLResponse else {
+            continuation.finish(throwing: DeepSeekError.invalidFormat(message: "Invalid Response from the server"))
+            return
+          }
+          
+          guard (200...299).contains(httpResponse.statusCode) else {
+            var errorData = Data()
+            for try await byte in bytes {
+              errorData.append(byte)
+            }
+            
+            if let errorResponse = try? JSONDecoder().decode(DeepSeekErrorResponse.self, from: errorData) {
+              continuation.finish(throwing: DeepSeekError.from(errorResponse, statusCode: httpResponse.statusCode))
+            } else {
+              continuation.finish(throwing: DeepSeekError.unknown(statusCode: httpResponse.statusCode, message: "Unknown streaming error"))
+            }
+            return
+          }
+          
+          for try await line in bytes.lines {
+            guard !line.isEmpty else { continue }
+            
+            if line.contains("[DONE]") {
+              continuation.finish()
+              return
+            }
+            
+            let jsonString = line.hasPrefix("data: ") ? String(line.dropFirst(6)) : line
+            
+            if let data = jsonString.data(using: .utf8),
+               let streamResponse = try? JSONDecoder().decode(ChatCompletionResponse.self, from: data)
+            {
+              let content = streamResponse.choices[0].message.content
+              continuation.yield(content)
+            }
+          }
+          
+          continuation.finish()
+        } catch {
+          continuation.finish(throwing: error)
+        }
+      }
     }
-    
-    var request = URLRequest(url: url)
-    request.httpMethod = "POST"
-    request.setValue("Bearer \(configuration.apiKey)", forHTTPHeaderField: "Authorization")
-    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    
-    let requestBody = parameters
-    
-    do {
-      request.httpBody = try JSONEncoder().encode(requestBody)
-    } catch {
-      throw DeepSeekError.encodingError(error)
-    }
+  }
+  
+  public func chatCompletions(
+    messages: () -> [ChatMessageRequest],
+    model: DeepSeekModel,
+    parameters: ChatParameters
+  ) async throws -> ChatCompletionResponse {
+    let request = try serializer.serializeChatMessageRequest(
+      messages: messages(),
+      model: model,
+      parameters: parameters
+    )
     
     let (data, response) = try await session.data(for: request)
     
