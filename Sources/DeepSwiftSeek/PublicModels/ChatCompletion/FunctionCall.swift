@@ -7,6 +7,6 @@
 
 
 public struct FunctionCall: Codable {
-    public let name: String
-    public let arguments: String
+  public let name: String
+  public let arguments: String
 }

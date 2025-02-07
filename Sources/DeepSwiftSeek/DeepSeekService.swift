@@ -6,7 +6,6 @@
 //
 
 import Foundation
-
 // TODO: Reasoning model, chain of thoughts.
 // TODO: Create Facade for Chats and Contexts and History
 // TODO: Make API cleaner and simpler to use
@@ -34,8 +33,7 @@ public final class DeepSeekClient: DeepSeekService, Sendable {
   private let configuration: Configuration
   private let session: URLSession
   private let serializer: DeepSeekRequestSerializer
-  
-  
+
   public init(configuration: Configuration, session: URLSession = .shared) {
     self.configuration = configuration
     self.session = session

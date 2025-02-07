@@ -7,7 +7,7 @@
 
 
 public struct ToolCall: Codable {
-    public let id: String
-    public let type: String
-    public let function: FunctionCall
+  public let id: String
+  public let type: String
+  public let function: FunctionCall
 }

@@ -7,7 +7,7 @@
 
 
 public struct TopLogProb: Codable {
-    public let token: String
-    public let logprob: Double
-    public let bytes: [Int]
+  public let token: String
+  public let logprob: Double
+  public let bytes: [Int]
 }

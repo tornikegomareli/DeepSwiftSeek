@@ -7,5 +7,5 @@
 
 
 public struct LogProbs: Codable {
-    public let content: [ContentLogProb]
+  public let content: [ContentLogProb]
 }
