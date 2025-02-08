@@ -30,10 +30,18 @@ public struct DeepSeekRequestSerializer: Sendable {
     request.setValue("Bearer \(configuration.apiKey)", forHTTPHeaderField: "Authorization")
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     
-    let requestBody = parameters
+    let requestBody = parameters?.withMessages(messages)
     
     do {
-      request.httpBody = try JSONEncoder().encode(requestBody)
+      let encoder = JSONEncoder()
+      encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+      let encodedData = try encoder.encode(requestBody)
+      
+      if let jsonString = String(data: encodedData, encoding: .utf8) {
+        print("Request Body JSON:\n\(jsonString)")
+      }
+      
+      request.httpBody = encodedData
     } catch {
       throw DeepSeekError.encodingError(error)
     }
