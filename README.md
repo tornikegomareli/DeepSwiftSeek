@@ -22,19 +22,19 @@
 **🚨 Due to current server resource constraints, DeepSeek temporarily suspended API service recharges to prevent any potential impact on users operations. 
 Existing balances can still be used for calls.**
 
-## Overview
+## 🍳 Overview
 
 DeepSeek Swift SDK is a lightweight and efficient Swift-based client for interacting with the DeepSeek API. It provides support for chat message completion, streaming, error handling, and configurating DeepSeek LLM with advanced parameters.
 
-## Features
+## ✨ Features  
 
-- Supports **chat completion** requests
-- Handles **error responses** with detailed error descriptions and solving advices.
-- **streaming responses**
-- Built-in support for **different models and advanced parameters**
-- Uses **Swift concurrency (async/await)** for network calls
+- **Chat Completion Support**: Easily send and process chat-based AI requests.  
+- **Smart Error Handling**: Provides detailed error descriptions along with actionable solutions.  
+- **Streaming Responses**: Supports real-time AI-generated content streaming.  
+- **Multi-Model Compatibility**: Works seamlessly with various DeepSeek models and advanced configurations.  
+- **Swift Concurrency Optimized**: Leverages `async/await` for efficient and modern networking.  
 
-## Installation
+## 📦 Installation
 
 To integrate `DeepSwiftSeek` into your project, you can use **Swift Package Manager (SPM)**:
 
@@ -52,7 +52,7 @@ Or add it via Xcode:
 3. Enter the repository URL.
 4. Choose the latest version and click **Next**.
 
-## Usage
+## 🔧 Usage
 
 ### 1. Initialize the Client
 
@@ -188,13 +188,13 @@ DeepSeek SDK has built-in error handling for various API failures:
 | `serverOverloaded` | High traffic on server. |
 | `encodingError` | Failed to encode request body. |
 
-## TODOs
+## 📌 TODOs
 
 - [ ] Improve documentation with more examples
 - [ ] SwiftUI full demo based on chat, history and reasoning
 - [ ] Reasoning model + OpenAI SDK
 
-## License
+## 🪪 License
 
 This project is available under the MIT License.
 
