@@ -6,6 +6,18 @@
   <img src="https://github.com/tornikegomareli/DeepSwiftSeek/blob/main/logo.webp" alt="My Image" width="500"/>
 </p>
 
+<p align="center">
+    <a href="https://platform.deepseek.com/usage">
+        <img src="https://img.shields.io/badge/Readthedocs-%23000000.svg?style=for-the-badge&logo=readthedocs&logoColor=white" alt="Documentation">
+    </a>
+    <a href="./LICENSE">
+        <img src="https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge" alt="MIT License">
+    </a>
+    <a href="https://swift.org">
+        <img src="https://img.shields.io/badge/swift-F54A2A?style=for-the-badge&logo=swift&logoColor=white" alt="Swift 5.7+">
+    </a>
+</p>
+
 
 **🚨 Due to current server resource constraints, DeepSeek temporarily suspended API service recharges to prevent any potential impact on users operations. 
 Existing balances can still be used for calls.**
