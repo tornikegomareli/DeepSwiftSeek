@@ -183,6 +183,25 @@ public final class DeepSeekClient: DeepSeekService, Sendable {
     return try JSONDecoder().decode(DeepSeekModelsList.self, from: data)
   }
   
+  public func fetchUserBalance() async throws -> AvailabilityResponse {
+    let request = try serializer.serializeBalanceRequest()
+    do {
+      let (data, response) = try await session.data(for: request)
+      
+      guard let httpResponse = response as? HTTPURLResponse else {
+        throw DeepSeekError.invalidFormat(message: "Invalid Response from the server")
+      }
+      
+      guard (200...299).contains(httpResponse.statusCode) else {
+        throw DeepSeekError.from(statusCode: httpResponse.statusCode, message: nil)
+      }
+
+      return try JSONDecoder().decode(AvailabilityResponse.self, from: data)
+    } catch {
+      throw DeepSeekError.unknown(statusCode: 0, message: error.localizedDescription)
+    }
+  }
+  
   public func fimCompletions(
     messages: () -> [ChatMessageRequest],
     model: DeepSeekModel,
