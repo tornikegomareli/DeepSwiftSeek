@@ -105,6 +105,21 @@ public final class DeepSeekClient: DeepSeekService, Sendable {
     }
   }
   
+  public func listModels() async throws -> DeepSeekModelsList {
+    let request = try serializer.serializeModelsRequest()
+    let (data, response) = try await session.data(for: request)
+    
+    guard let httpResponse = response as? HTTPURLResponse else {
+      throw DeepSeekError.invalidFormat(message: "Invalid Response from the server")
+    }
+    
+    guard (200...299).contains(httpResponse.statusCode) else {
+      throw DeepSeekError.from(statusCode: httpResponse.statusCode, message: nil)
+    }
+    
+    return try JSONDecoder().decode(DeepSeekModelsList.self, from: data)
+  }
+  
   public func chatCompletions(
     messages: () -> [ChatMessageRequest],
     model: DeepSeekModel,
