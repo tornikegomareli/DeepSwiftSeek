@@ -270,7 +270,7 @@ DeepSeek SDK has built-in error handling for various API failures:
 
 ## TODOs
 
-- [ ] Improve documentation with more examples
+- [x] Improve documentation with more examples
 - [ ] SwiftUI full demo based on chat, history and reasoning
 - [ ] Reasoning model + OpenAI SDK
 
