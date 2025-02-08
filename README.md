@@ -167,11 +167,21 @@ Task {
         print("ListModels Error: \(error.localizedDescription)")
     }
 }
+```
 
+### 7. Getting Balance of the user
+```swift
+Task {
+    do {
+        let response = try await deepSeekClient.fetchUserBalance()
+    } catch {
+        print("UserBalance Error: \(error.localizedDescription)")
+    }
+}
 ```
 
 
-### 7. Handling Errors
+### 8. Handling Errors
 
 The SDK provides detailed error handling:
 
