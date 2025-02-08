@@ -17,4 +17,10 @@ public struct ChatMessageRequest: Codable {
   public let role: MessegingRole
   public let content: String
   public var trimmed: Bool = false
+  
+  public init(role: MessegingRole, content: String, trimmed: Bool) {
+    self.role = role
+    self.content = content
+    self.trimmed = trimmed
+  }
 }
