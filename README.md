@@ -41,7 +41,7 @@ To integrate `DeepSwiftSeek` into your project, you can use **Swift Package Mana
 ```swift
 let package = Package(
     dependencies: [
-        .package(url: "https://github.com/tornikegomareli/DeepSwiftSeek.git", from: "0.0.1")
+        .package(url: "https://github.com/tornikegomareli/DeepSwiftSeek.git", exact: "0.0.2")
     ]
 )
 ```
