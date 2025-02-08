@@ -22,26 +22,26 @@
 **🚨 Due to current server resource constraints, DeepSeek temporarily suspended API service recharges to prevent any potential impact on users operations. 
 Existing balances can still be used for calls.**
 
-## 🍳 Overview
+## Overview
 
 DeepSeek Swift SDK is a lightweight and efficient Swift-based client for interacting with the DeepSeek API. It provides support for chat message completion, streaming, error handling, and configurating DeepSeek LLM with advanced parameters.
 
-## ✨ Features  
+## Features
 
-- **Chat Completion Support**: Easily send and process chat-based AI requests.  
-- **Smart Error Handling**: Provides detailed error descriptions along with actionable solutions.  
-- **Streaming Responses**: Supports real-time AI-generated content streaming.  
-- **Multi-Model Compatibility**: Works seamlessly with various DeepSeek models and advanced configurations.  
-- **Swift Concurrency Optimized**: Leverages `async/await` for efficient and modern networking.  
+- Supports **chat completion** requests
+- Handles **error responses** with detailed error descriptions and recovery suggestions.
+- **streaming responses**
+- Built-in support for **different models and advanced parameters**
+- Uses **Swift concurrency (async/await)** for network calls
 
-## 📦 Installation
+## Installation
 
 To integrate `DeepSwiftSeek` into your project, you can use **Swift Package Manager (SPM)**:
 
 ```swift
 let package = Package(
     dependencies: [
-        .package(url: "https://github.com/tornikegomareli/DeepSwiftSeek.git", from: "0.0.1")
+        .package(url: "https://github.com/tornikegomareli/DeepSwiftSeek.git", exact: "0.0.2")
     ]
 )
 ```
@@ -52,7 +52,7 @@ Or add it via Xcode:
 3. Enter the repository URL.
 4. Choose the latest version and click **Next**.
 
-## 🔧 Usage
+## Usage
 
 ### 1. Initialize the Client
 
@@ -103,7 +103,75 @@ Task {
 }
 ```
 
-### 4. Handling Errors
+### 4. Streaming FIM Completion
+```swift
+Task {
+    do {
+        let stream = try await deepSeekClient.fimCompletionStream(
+            messages: {
+                [
+                    ChatMessageRequest(
+                      role: .user,
+                      content: "function greet() {\n  /* FIM_START */\n  /* FIM_END */\n  return 'Hello world';\n}",
+                      name: "User"
+                    )
+                ]
+            },
+            model: .deepSeekReasoner,
+            parameters: .streaming
+        )
+        
+        for try await chunk in stream {
+            // Each chunk is a streamed part of the fill-in-the-middle response.
+            print("FIM Stream Chunk:\n\(chunk)")
+        }
+    } catch {
+        print("FIM Streaming Error: \(error.localizedDescription)")
+    }
+}
+```
+
+### 5. Sending FIM Completion Request
+```swift
+Task {
+    do {
+        let response = try await deepSeekClient.fimCompletions(
+            messages: {
+                [
+                    ChatMessageRequest(
+                      role: .user,
+                      content: "function greet() {\n  // FIM_START\n  // FIM_END\n  return 'Hello world';\n}",
+                      name: "User"
+                    )
+                ]
+            },
+            model: .deepSeekReasoner,
+            parameters: .creative
+        )
+        if let content = response.choices.first?.message.content {
+            print("FIM Completion:\n\(content)")
+        }
+    } catch {
+        print("FIM Error: \(error.localizedDescription)")
+    }
+}
+
+```
+
+### 6. Getting List of Models
+```swift
+Task {
+    do {
+        let response = try await deepSeekClient.listModels()
+    } catch {
+        print("ListModels Error: \(error.localizedDescription)")
+    }
+}
+
+```
+
+
+### 7. Handling Errors
 
 The SDK provides detailed error handling:
 
@@ -188,16 +256,15 @@ DeepSeek SDK has built-in error handling for various API failures:
 | `serverOverloaded` | High traffic on server. |
 | `encodingError` | Failed to encode request body. |
 
-## 📌 TODOs
+## TODOs
 
 - [ ] Improve documentation with more examples
 - [ ] SwiftUI full demo based on chat, history and reasoning
 - [ ] Reasoning model + OpenAI SDK
 
-## 🪪 License
+## License
 
 This project is available under the MIT License.
 
 ### Disclaimer
 This SDK is **not affiliated** with DeepSeek and is an independent implementation to interact with their API.
-
