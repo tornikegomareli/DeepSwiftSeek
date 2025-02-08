@@ -27,6 +27,18 @@ public struct DeepSeekRequestSerializer: Sendable {
     )
   }
   
+  public func serializeFIMCompletionRequest(
+    messages: [ChatMessageRequest],
+    model: DeepSeekModel,
+    parameters: ChatParameters?
+  ) throws -> URLRequest {
+    try serializeRequest(
+      endpoint: "beta/completions",
+      method: "POST",
+      body: parameters?.withMessages(messages)
+    )
+  }
+  
   public func serializeModelsRequest() throws -> URLRequest {
     try serializeRequestWithoutBody(
       endpoint: "models",
