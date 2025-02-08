@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 // TODO: Reasoning model, chain of thoughts.
 // TODO: Create Facade for Chats and Contexts and History
 // TODO: Make API cleaner and simpler to use
@@ -33,7 +34,7 @@ public final class DeepSeekClient: DeepSeekService, Sendable {
   private let configuration: Configuration
   private let session: URLSession
   private let serializer: DeepSeekRequestSerializer
-
+  
   public init(configuration: Configuration, session: URLSession = .shared) {
     self.configuration = configuration
     self.session = session
@@ -115,25 +116,23 @@ public final class DeepSeekClient: DeepSeekService, Sendable {
       parameters: parameters
     )
     
-    let (data, response) = try await session.data(for: request)
-    
-    guard let httpResponse = response as? HTTPURLResponse else {
-      throw DeepSeekError.invalidFormat(message: "Invalid Response from the server")
-    }
-    
-    guard (200...299).contains(httpResponse.statusCode) else {
-      if let errorResponse = try? JSONDecoder().decode(DeepSeekErrorResponse.self, from: data) {
-        throw DeepSeekError.from(errorResponse, statusCode: httpResponse.statusCode)
+    do {
+      let (data, response) = try await session.data(for: request)
+      
+      guard let httpResponse = response as? HTTPURLResponse else {
+        throw DeepSeekError.invalidFormat(message: "Invalid Response from the server")
       }
       
-      throw DeepSeekError.unknown(statusCode: httpResponse.statusCode, message: "Decoding error of the DeepSeek Response")
-    }
-    
-    do {
-      let decoder = JSONDecoder()
-      return try decoder.decode(ChatCompletionResponse.self, from: data)
+      guard (200...299).contains(httpResponse.statusCode) else {
+        throw DeepSeekError.from(statusCode: httpResponse.statusCode, message: nil)
+      }
+      
+      return try JSONDecoder().decode(ChatCompletionResponse.self, from: data)
     } catch {
-      throw DeepSeekError.unknown(statusCode: httpResponse.statusCode, message: "Decoding error of the DeepSeek Response")
+      if let deepSeekError = error as? DeepSeekError {
+        throw deepSeekError
+      }
+      throw DeepSeekError.unknown(statusCode: 0, message: error.localizedDescription)
     }
   }
 }
