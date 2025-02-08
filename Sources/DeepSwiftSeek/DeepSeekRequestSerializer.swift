@@ -27,6 +27,13 @@ public struct DeepSeekRequestSerializer: Sendable {
     )
   }
   
+  public func serializeBalanceRequest() throws -> URLRequest {
+    try serializeRequestWithoutBody(
+      endpoint: "/user/balance",
+      method: "GET"
+    )
+  }
+  
   public func serializeFIMCompletionRequest(
     messages: [ChatMessageRequest],
     model: DeepSeekModel,
