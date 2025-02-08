@@ -1,6 +1,6 @@
 import Foundation
 
-public enum DeepSeekModel: String, CaseIterable {
+public enum DeepSeekModel: String, Sendable, CaseIterable {
   /// The DeepSeek-V3 model optimized for chat interactions.
   ///
   /// - Note: This model has been upgraded to DeepSeek-V3.
