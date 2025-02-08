@@ -7,6 +7,8 @@
 
 
 public struct ChatParameters: Codable, Sendable {
+  var messages: [ChatMessageRequest] = []
+  var model: String
   let frequencyPenalty: Double?
   let maxTokens: Int?
   let presencePenalty: Double?
@@ -20,6 +22,24 @@ public struct ChatParameters: Codable, Sendable {
   let toolChoice: ToolChoice?
   let logprobs: Bool?
   let topLogprobs: Int?
+  
+  public init(messages: [ChatMessageRequest] = [], chatModel: DeepSeekModel = .deepSeekChat,frequencyPenalty: Double?, maxTokens: Int?, presencePenalty: Double?, responseFormat: ResponseFormat?, stop: [String]?, stream: Bool?, streamOptions: StreamOptions?, temperature: Double?, topP: Double?, tools: [Tool]?, toolChoice: ToolChoice?, logprobs: Bool?, topLogprobs: Int?) {
+    self.messages = messages
+    self.model = chatModel.rawValue
+    self.frequencyPenalty = frequencyPenalty
+    self.maxTokens = maxTokens
+    self.presencePenalty = presencePenalty
+    self.responseFormat = responseFormat
+    self.stop = stop
+    self.stream = stream
+    self.streamOptions = streamOptions
+    self.temperature = temperature
+    self.topP = topP
+    self.tools = tools
+    self.toolChoice = toolChoice
+    self.logprobs = logprobs
+    self.topLogprobs = topLogprobs
+  }
   
   enum CodingKeys: String, CodingKey {
     case frequencyPenalty = "frequency_penalty"
@@ -35,6 +55,8 @@ public struct ChatParameters: Codable, Sendable {
     case toolChoice = "tool_choice"
     case logprobs
     case topLogprobs = "top_logprobs"
+    case model
+    case messages
   }
   
   // MARK: - Static Defaults
@@ -135,6 +157,46 @@ public struct ChatParameters: Codable, Sendable {
       responseFormat: self.responseFormat,
       stop: self.stop,
       stream: enabled,
+      streamOptions: self.streamOptions,
+      temperature: self.temperature,
+      topP: self.topP,
+      tools: self.tools,
+      toolChoice: self.toolChoice,
+      logprobs: self.logprobs,
+      topLogprobs: self.topLogprobs
+    )
+  }
+  
+  public func withMessages(_ messages: [ChatMessageRequest]) -> ChatParameters {
+    ChatParameters(
+      messages: messages,
+      chatModel: DeepSeekModel(rawValue: self.model) ?? .deepSeekChat,
+      frequencyPenalty: self.frequencyPenalty,
+      maxTokens: self.maxTokens,
+      presencePenalty: self.presencePenalty,
+      responseFormat: self.responseFormat,
+      stop: self.stop,
+      stream: self.stream,
+      streamOptions: self.streamOptions,
+      temperature: self.temperature,
+      topP: self.topP,
+      tools: self.tools,
+      toolChoice: self.toolChoice,
+      logprobs: self.logprobs,
+      topLogprobs: self.topLogprobs
+    )
+  }
+  
+  public func withModel(_ model: DeepSeekModel) -> ChatParameters {
+    ChatParameters(
+      messages: self.messages,
+      chatModel: model,
+      frequencyPenalty: self.frequencyPenalty,
+      maxTokens: self.maxTokens,
+      presencePenalty: self.presencePenalty,
+      responseFormat: self.responseFormat,
+      stop: self.stop,
+      stream: self.stream,
       streamOptions: self.streamOptions,
       temperature: self.temperature,
       topP: self.topP,

@@ -13,14 +13,14 @@
 //  Created by Tornike Gomareli on 29.01.25.
 //
 
-public struct ChatMessageRequest: Codable {
+public struct ChatMessageRequest: Codable, Sendable {
   public let role: MessegingRole
   public let content: String
-  public var trimmed: Bool = false
+  public var name: String = ""
   
-  public init(role: MessegingRole, content: String, trimmed: Bool) {
+  public init(role: MessegingRole, content: String, name: String) {
     self.role = role
     self.content = content
-    self.trimmed = trimmed
+    self.name = name
   }
 }
