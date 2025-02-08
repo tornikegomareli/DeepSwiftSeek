@@ -6,7 +6,7 @@
 //
 
 
-public struct ToolCall: Codable {
+public struct ToolCall: Codable, Sendable {
   public let id: String
   public let type: String
   public let function: FunctionCall

@@ -5,7 +5,6 @@
 //  Created by Tornike Gomareli on 29.01.25.
 //
 
-
 public struct ChatCompletionResponse: Codable {
   public let id: String
   public let choices: [ChoiceResponse]

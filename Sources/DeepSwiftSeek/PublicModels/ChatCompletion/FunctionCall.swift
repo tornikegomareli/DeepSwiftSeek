@@ -6,7 +6,7 @@
 //
 
 
-public struct FunctionCall: Codable {
+public struct FunctionCall: Codable, Sendable {
   public let name: String
   public let arguments: String
 }

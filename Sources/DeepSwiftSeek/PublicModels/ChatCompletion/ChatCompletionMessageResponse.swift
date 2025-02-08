@@ -6,7 +6,7 @@
 //
 
 
-public struct ChatCompletionMessageResponse: Codable {
+public struct ChatCompletionMessageResponse: Codable, Sendable {
   public let content: String
   public let reasoningContent: String?
   public let toolCalls: [ToolCall]?
