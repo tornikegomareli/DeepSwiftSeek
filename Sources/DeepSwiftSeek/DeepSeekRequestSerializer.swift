@@ -20,30 +20,67 @@ public struct DeepSeekRequestSerializer: Sendable {
     model: DeepSeekModel,
     parameters: ChatParameters?
   ) throws -> URLRequest {
-    guard let url = URL(string: "\(configuration.baseURL)/chat/completions") else {
-      throw DeepSeekError.invalidUrl(message: "Invalid Url for DeepSeek completion endpoint")
+    try serializeRequest(
+      endpoint: "chat/completions",
+      method: "POST",
+      body: parameters?.withMessages(messages)
+    )
+  }
+  
+  public func serializeModelsRequest() throws -> URLRequest {
+    try serializeRequestWithoutBody(
+      endpoint: "models",
+      method: "GET"
+    )
+  }
+  
+  private func serializeRequestWithoutBody(
+    endpoint: String,
+    method: String
+  ) throws -> URLRequest {
+    try createBaseRequest(endpoint: endpoint, method: method)
+  }
+  
+  private func createBaseRequest(
+    endpoint: String,
+    method: String
+  ) throws -> URLRequest {
+    guard let url = URL(string: "\(configuration.baseURL)/\(endpoint)") else {
+      throw DeepSeekError.invalidUrl(message: "Invalid URL for \(endpoint) endpoint")
     }
     
-    // Create request with common headers
     var request = URLRequest(url: url)
-    request.httpMethod = "POST"
+    request.httpMethod = method
     request.setValue("Bearer \(configuration.apiKey)", forHTTPHeaderField: "Authorization")
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     
-    let requestBody = parameters?.withMessages(messages)
+    return request
+  }
+
+  private func serializeRequest<T: Encodable>(
+    endpoint: String,
+    method: String,
+    body: T?
+  ) throws -> URLRequest {
+    guard let url = URL(string: "\(configuration.baseURL)/\(endpoint)") else {
+      throw DeepSeekError.invalidUrl(message: "Invalid URL for \(endpoint) endpoint")
+    }
     
-    do {
+    var request = URLRequest(url: url)
+    request.httpMethod = method
+    request.setValue("Bearer \(configuration.apiKey)", forHTTPHeaderField: "Authorization")
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    
+    if let body = body {
       let encoder = JSONEncoder()
       encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-      let encodedData = try encoder.encode(requestBody)
+      let encodedData = try encoder.encode(body)
       
       if let jsonString = String(data: encodedData, encoding: .utf8) {
         print("Request Body JSON:\n\(jsonString)")
       }
       
       request.httpBody = encodedData
-    } catch {
-      throw DeepSeekError.encodingError(error)
     }
     
     return request
