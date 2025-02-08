@@ -29,9 +29,11 @@ DeepSeek Swift SDK is a lightweight and efficient Swift-based client for interac
 ## Features
 
 - Supports **chat completion** requests
+- Supports **fill in the middle completion** requests
 - Handles **error responses** with detailed error descriptions and recovery suggestions.
-- **streaming responses**
+- **streaming responses** both for chat completion and as well fill in the middle responses
 - Built-in support for **different models and advanced parameters**
+- User balance fetchin and available LLM models fetching
 - Uses **Swift concurrency (async/await)** for network calls
 
 ## Installation
