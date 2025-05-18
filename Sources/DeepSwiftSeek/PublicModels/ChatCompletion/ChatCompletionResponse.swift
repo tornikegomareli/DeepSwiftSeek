@@ -12,7 +12,7 @@ public struct ChatCompletionResponse: Codable {
   public let model: String
   public let systemFingerprint: String
   public let object: String
-  public let usage: Usage
+  public let usage: Usage?
   
   enum CodingKeys: String, CodingKey {
     case id

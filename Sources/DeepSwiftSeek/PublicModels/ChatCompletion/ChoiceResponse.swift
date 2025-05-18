@@ -7,7 +7,7 @@
 
 
 public struct ChoiceResponse: Codable {
-  public let finishReason: String
+  public let finishReason: String?
   public let index: Int
   public let message: ChatCompletionMessageResponse
   public let logprobs: LogProbs?
@@ -15,7 +15,7 @@ public struct ChoiceResponse: Codable {
   enum CodingKeys: String, CodingKey {
     case finishReason = "finish_reason"
     case index
-    case message
+    case message = "delta"
     case logprobs
   }
 }

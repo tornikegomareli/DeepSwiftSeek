@@ -10,7 +10,7 @@ public struct ChatCompletionMessageResponse: Codable, Sendable {
   public let content: String
   public let reasoningContent: String?
   public let toolCalls: [ToolCall]?
-  public let role: String
+  public let role: String?
   
   enum CodingKeys: String, CodingKey {
     case content
