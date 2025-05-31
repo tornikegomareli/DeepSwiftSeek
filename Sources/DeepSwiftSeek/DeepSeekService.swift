@@ -88,11 +88,16 @@ public final class DeepSeekClient: DeepSeekService, Sendable {
             
             let jsonString = line.hasPrefix("data: ") ? String(line.dropFirst(6)) : line
             
-            if let data = jsonString.data(using: .utf8),
-               let streamResponse = try? JSONDecoder().decode(ChatCompletionResponse.self, from: data)
-            {
+            guard let data = jsonString.data(using: .utf8) else {
+              continuation.finish(throwing: DeepSeekError.invalidFormat(message: "Invalid Response from the server"))
+              return
+            }
+            do {
+              let streamResponse = try JSONDecoder().decode(ChatCompletionResponse.self, from: data)
               let content = streamResponse.choices[0].message.content
               continuation.yield(content)
+            } catch {
+              continuation.finish(throwing: error)
             }
           }
           

@@ -12,7 +12,7 @@ public struct Usage: Codable {
   public let promptCacheHitTokens: Int
   public let promptCacheMissTokens: Int
   public let totalTokens: Int
-  public let completionTokensDetails: CompletionTokensDetails
+  public let completionTokensDetails: CompletionTokensDetails?
   
   enum CodingKeys: String, CodingKey {
     case completionTokens = "completion_tokens"
